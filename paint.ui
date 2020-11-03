@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">#centralwidget {
+       background-color: rgb(255, 255, 255);
+}</string>
+  </property>
+  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>18</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>Инструменты</string>
+    </property>
+    <addaction name="brush"/>
+    <addaction name="line"/>
+    <addaction name="circle"/>
+    <addaction name="color"/>
+    <addaction name="lastik"/>
+    <addaction name="rectangle"/>
+    <addaction name="triangle"/>
+   </widget>
+   <widget class="QMenu" name="menu_2">
+    <property name="title">
+     <string>Толщина</string>
+    </property>
+    <addaction name="thin"/>
+    <addaction name="not_thin"/>
+    <addaction name="average"/>
+    <addaction name="thick"/>
+    <addaction name="very_thick"/>
+   </widget>
+   <addaction name="menu"/>
+   <addaction name="menu_2"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="brush"/>
+   <addaction name="line"/>
+   <addaction name="circle"/>
+   <addaction name="triangle"/>
+   <addaction name="rectangle"/>
+   <addaction name="lastik"/>
+   <addaction name="color"/>
+  </widget>
+  <action name="brush">
+   <property name="icon">
+    <iconset>
+     <normalon>brush.png</normalon>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>Кисточка</string>
+   </property>
+  </action>
+  <action name="line">
+   <property name="icon">
+    <iconset>
+     <normalon>line.png</normalon>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>Линия</string>
+   </property>
+  </action>
+  <action name="circle">
+   <property name="icon">
+    <iconset>
+     <normalon>circle.png</normalon>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>Окружность</string>
+   </property>
+  </action>
+  <action name="color">
+   <property name="icon">
+    <iconset>
+     <normalon>grad.jpg</normalon>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>Цвет</string>
+   </property>
+  </action>
+  <action name="lastik">
+   <property name="icon">
+    <iconset>
+     <normaloff>lastik.jpg</normaloff>lastik.jpg</iconset>
+   </property>
+   <property name="text">
+    <string>Ластик</string>
+   </property>
+  </action>
+  <action name="rectangle">
+   <property name="icon">
+    <iconset>
+     <normaloff>rec.jpg</normaloff>rec.jpg</iconset>
+   </property>
+   <property name="text">
+    <string>Прямоуголник</string>
+   </property>
+  </action>
+  <action name="triangle">
+   <property name="icon">
+    <iconset>
+     <normaloff>triangle.png</normaloff>triangle.png</iconset>
+   </property>
+   <property name="text">
+    <string>Треугольник</string>
+   </property>
+  </action>
+  <action name="thin">
+   <property name="text">
+    <string>Тонкая</string>
+   </property>
+  </action>
+  <action name="not_thin">
+   <property name="text">
+    <string>Не очень тонкая</string>
+   </property>
+  </action>
+  <action name="average">
+   <property name="text">
+    <string>Средняя</string>
+   </property>
+  </action>
+  <action name="thick">
+   <property name="text">
+    <string>Толстая</string>
+   </property>
+  </action>
+  <action name="very_thick">
+   <property name="text">
+    <string>Очень толстая</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
