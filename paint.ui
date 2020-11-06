@@ -14,9 +14,9 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">#centralwidget {
-       background-color: rgb(255, 255, 255);
-}</string>
+   <string notr="true">#centralwidget
+{background-color: rgb(255, 0, 0);}
+</string>
   </property>
   <widget class="QWidget" name="centralwidget"/>
   <widget class="QMenuBar" name="menubar">
@@ -35,10 +35,10 @@
     <addaction name="brush"/>
     <addaction name="line"/>
     <addaction name="circle"/>
-    <addaction name="color"/>
-    <addaction name="lastik"/>
     <addaction name="rectangle"/>
     <addaction name="triangle"/>
+    <addaction name="lastik"/>
+    <addaction name="color"/>
    </widget>
    <widget class="QMenu" name="menu_2">
     <property name="title">
@@ -50,6 +50,13 @@
     <addaction name="thick"/>
     <addaction name="very_thick"/>
    </widget>
+   <widget class="QMenu" name="menu_3">
+    <property name="title">
+     <string>Файл</string>
+    </property>
+    <addaction name="save"/>
+   </widget>
+   <addaction name="menu_3"/>
    <addaction name="menu"/>
    <addaction name="menu_2"/>
   </widget>
@@ -162,6 +169,11 @@
   <action name="very_thick">
    <property name="text">
     <string>Очень толстая</string>
+   </property>
+  </action>
+  <action name="save">
+   <property name="text">
+    <string>Сохранить</string>
    </property>
   </action>
  </widget>

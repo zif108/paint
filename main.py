@@ -2,8 +2,8 @@ import sys
 
 from PyQt5 import uic
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QBrush, QColor, QPainter, QPen
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QColorDialog
+from PyQt5.QtGui import QBrush, QColor, QPainter, QPen, QPixmap
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QColorDialog, QLabel
 
 lx = 0
 ly = 0
@@ -12,11 +12,6 @@ color = (0, 0, 0)
 eraser = False
 
 thickness = 5
-
-
-class Triangle:
-    def __init__(self):
-        pass
 
 
 class BrushPoint:
@@ -75,19 +70,29 @@ class Line:
 class Circle:
     def __init__(self, cx, cy, x, y):
         global color
+        global thickness
         self.cx = cx
         self.cy = cy
         self.x = x
         self.y = y
         self.pen = QPen(QColor(color[0], color[1], color[2]))
 
-        self.pen.setWidth(10)
+        self.pen.setWidth(thickness)
 
     def draw(self, painter):
         painter.setBrush(QBrush(QColor(0, 0, 0, 0)))
         painter.setPen(self.pen)
         radius = int(((self.cx - self.x) ** 2 + (self.cy - self.y) ** 2) ** 0.5)
         painter.drawEllipse(self.cx - radius, self.cy - radius, 2 * radius, 2 * radius)
+
+
+class Triangle:
+    def __init__(self):
+        pass
+
+
+class Rectangle:
+    pass
 
 
 class Canvas(QWidget):
@@ -127,8 +132,6 @@ class Canvas(QWidget):
         if event.buttons() and Qt.LeftButton:
             if self.instrument == 'brush':
                 self.objects.append(Line(lx, ly, event.x(), event.y()))
-                # print(self.ly)
-                # print(self.ly)
                 self.objects.append(BrushPoint(event.x(), event.y()))
                 self.update()
 
@@ -197,6 +200,9 @@ class Program(QMainWindow):
         super().__init__()
         uic.loadUi('paint.ui', self)
 
+        # self.pixmap = QPixmap('white.png')
+        # self.image = QLabel(self)
+
         self.setCentralWidget(Canvas())
         self.brush.triggered.connect(self.centralWidget().setBrush)
         self.line.triggered.connect(self.centralWidget().setLine)
@@ -204,11 +210,18 @@ class Program(QMainWindow):
         self.triangle.triggered.connect(self.centralWidget().triangle)
         self.lastik.triggered.connect(self.centralWidget().setEraser)
         self.color.triggered.connect(self.centralWidget().color)
+        self.rectangle.triggered.connect(self.centralWidget().rectangle)
+
         self.thin.triggered.connect(self.centralWidget().thin)
         self.not_thin.triggered.connect(self.centralWidget().not_thin)
         self.average.triggered.connect(self.centralWidget().average)
         self.thick.triggered.connect(self.centralWidget().thick)
         self.very_thick.triggered.connect(self.centralWidget().very_thick)
+
+        self.save.triggered.connect(self.save_)
+
+    def save_(self):
+        self.centralWidget().grab().save('img.jpg')
 
 
 def except_hook(cls, exception, traceback):
