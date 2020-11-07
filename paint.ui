@@ -15,7 +15,7 @@
   </property>
   <property name="styleSheet">
    <string notr="true">#centralwidget
-{background-color: rgb(255, 0, 0);}
+{background-color: rgb(255, 255, 255);}
 </string>
   </property>
   <widget class="QWidget" name="centralwidget"/>

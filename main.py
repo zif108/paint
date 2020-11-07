@@ -3,7 +3,7 @@ import sys
 from PyQt5 import uic
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QBrush, QColor, QPainter, QPen, QPixmap
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QColorDialog, QLabel
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QColorDialog, QLabel, QFileDialog
 
 lx = 0
 ly = 0
@@ -58,7 +58,7 @@ class Line:
 
     def draw(self, painter):
         if not eraser:
-            painter.setBrush(QBrush(QColor(color[0], color[1], color[2])))
+            # painter.setBrush(QBrush(QColor(color[0], color[1], color[2])))
             painter.setPen(self.pen)
             painter.drawLine(self.sx, self.sy, self.ex, self.ey)
         else:
@@ -87,12 +87,39 @@ class Circle:
 
 
 class Triangle:
-    def __init__(self):
-        pass
+    def __init__(self, top, left, right):
+        global color
+        global thickness
+        self.top = top
+        self.left = left
+        self.right = right
+
+        self.pen = QPen(QColor(color[0], color[1], color[2]))
+        self.pen.setWidth(thickness)
+
+    def draw(self, painter):
+        painter.setBrush(QBrush(QColor(0, 0, 0, 0)))
+        painter.setPen(self.pen)
+        painter.drawPolygon(self.top, self.left, self.right)
+
 
 
 class Rectangle:
-    pass
+    def __init__(self, x, y, width, hight):
+        global color
+        global thickness
+        self.x = x
+        self.y = y
+        self.width = width
+        self.hight = hight
+
+        self.pen = QPen(QColor(color[0], color[1], color[2]))
+        self.pen.setWidth(thickness)
+
+    def draw(self, painter):
+        painter.setBrush(QBrush(QColor(0, 0, 0, 0)))
+        painter.setPen(self.pen)
+        painter.drawRect(self.x, self.y, self.width, self.hight)
 
 
 class Canvas(QWidget):
@@ -121,6 +148,14 @@ class Canvas(QWidget):
                 self.objects.append(Circle(event.x(), event.y(), event.x(), event.y()))
                 self.update()
 
+            elif self.instrument == 'rectangle':
+                self.objects.append(Rectangle(event.x(), event.y(), 1, 1))
+                self.update()
+
+            elif self.instrument == 'triangle':
+                self.objects.append(Triangle(event.x(), event.x(), event.x()))
+                self.update()
+
             elif self.instrument == 'eraser':
                 if self.instrument == 'brush':
                     self.objects.append(BrushPoint(event.x(), event.y()))
@@ -143,6 +178,11 @@ class Canvas(QWidget):
             elif self.instrument == 'circle':
                 self.objects[-1].x = event.x()
                 self.objects[-1].y = event.y()
+                self.update()
+
+            elif self.instrument == 'rectangle':
+                self.objects[-1].width = event.x() - self.objects[-1].x
+                self.objects[-1].hight = event.y() - self.objects[-1].y
                 self.update()
 
     def setBrush(self):
@@ -174,6 +214,9 @@ class Canvas(QWidget):
     def triangle(self):
         self.instrument = 'triangle'
 
+    def rectangle(self):
+        self.instrument = 'rectangle'
+
     def thin(self):
         global thickness
         thickness = 1
@@ -200,9 +243,6 @@ class Program(QMainWindow):
         super().__init__()
         uic.loadUi('paint.ui', self)
 
-        # self.pixmap = QPixmap('white.png')
-        # self.image = QLabel(self)
-
         self.setCentralWidget(Canvas())
         self.brush.triggered.connect(self.centralWidget().setBrush)
         self.line.triggered.connect(self.centralWidget().setLine)
@@ -221,7 +261,8 @@ class Program(QMainWindow):
         self.save.triggered.connect(self.save_)
 
     def save_(self):
-        self.centralWidget().grab().save('img.jpg')
+        fname = QFileDialog.getSaveFileName(self, 'Cохранить как', 'img.jpg')[0]
+        self.centralWidget().grab().save(fname)
 
 
 def except_hook(cls, exception, traceback):
