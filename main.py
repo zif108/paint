@@ -1,13 +1,16 @@
 import sys
 
 from PyQt5 import uic
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QBrush, QColor, QPainter, QPen, QPixmap
+from PyQt5.QtCore import Qt, QPoint
+from PyQt5.QtGui import QBrush, QColor, QPainter, QPen, QPixmap, QPolygon
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QColorDialog, QLabel, QFileDialog
 
 lx = 0
 ly = 0
 color = (0, 0, 0)
+
+tr_top = 0
+tr_left = 0
 
 eraser = False
 
@@ -85,23 +88,38 @@ class Circle:
         radius = int(((self.cx - self.x) ** 2 + (self.cy - self.y) ** 2) ** 0.5)
         painter.drawEllipse(self.cx - radius, self.cy - radius, 2 * radius, 2 * radius)
 
-
+# Класс треугольника
 class Triangle:
-    def __init__(self, top, left, right):
+    def __init__(self, top_x, top_y, left_x, left_y, right_x, right_y):
         global color
         global thickness
-        self.top = top
-        self.left = left
-        self.right = right
+        global tr_top
+        global tr_left
+        self.top_x = top_x
+        self.top_y = top_y
+        self.left_x = left_x
+        self.left_y = left_y
+        self.right_x = right_x
+        self.right_y = right_y
 
+        # tr_top = self.top_x, self.top_y
+        tr_left = self.left_x  # Точка с постоянным x
         self.pen = QPen(QColor(color[0], color[1], color[2]))
         self.pen.setWidth(thickness)
 
+        # точки
+        self.points = QPolygon([
+            QPoint(self.top_x, self.top_y),
+            QPoint(self.left_x, self.left_y),
+            QPoint(self.right_x, self.right_y)
+
+        ])
+
     def draw(self, painter):
         painter.setBrush(QBrush(QColor(0, 0, 0, 0)))
-        painter.setPen(self.pen)
-        painter.drawPolygon(self.top, self.left, self.right)
-
+        painter.setPen(QPen(QColor(0,0,0,0)))
+        # рисуем
+        painter.drawPolygon(self.points)
 
 
 class Rectangle:
@@ -153,7 +171,10 @@ class Canvas(QWidget):
                 self.update()
 
             elif self.instrument == 'triangle':
-                self.objects.append(Triangle(event.x(), event.x(), event.x()))
+                self.objects.append(
+                    Triangle(event.x(), event.y(), event.x(), event.y(), event.x(), event.y())) # передаем точки в класс
+                print(self.objects)
+                print(tr_left)
                 self.update()
 
             elif self.instrument == 'eraser':
@@ -164,6 +185,7 @@ class Canvas(QWidget):
     def mouseMoveEvent(self, event):
         global lx
         global ly
+        global tr_left
         if event.buttons() and Qt.LeftButton:
             if self.instrument == 'brush':
                 self.objects.append(Line(lx, ly, event.x(), event.y()))
@@ -184,6 +206,15 @@ class Canvas(QWidget):
                 self.objects[-1].width = event.x() - self.objects[-1].x
                 self.objects[-1].hight = event.y() - self.objects[-1].y
                 self.update()
+
+            # Изменение фигуры при рисовании
+            elif self.instrument == 'triangle':
+                self.objects[-1].top_x = (event.x() - tr_left) / 2 # Координата врешины (она находится на срередине основания по x)
+                self.objects[-1].top_y = event.y() # Координата вершины по y
+                # координаты левой точки не меняются
+                self.objects[-1].rigtht_x = event.x()
+                # координаты правой точки меняются только по x
+
 
     def setBrush(self):
         global eraser
