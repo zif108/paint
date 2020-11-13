@@ -15,6 +15,7 @@ tr_left = 0
 eraser = False
 
 thickness = 5
+first = True
 
 
 class BrushPoint:
@@ -88,6 +89,7 @@ class Circle:
         radius = int(((self.cx - self.x) ** 2 + (self.cy - self.y) ** 2) ** 0.5)
         painter.drawEllipse(self.cx - radius, self.cy - radius, 2 * radius, 2 * radius)
 
+
 # Класс треугольника
 class Triangle:
     def __init__(self, top_x, top_y, left_x, left_y, right_x, right_y):
@@ -95,6 +97,7 @@ class Triangle:
         global thickness
         global tr_top
         global tr_left
+        global first
         self.top_x = top_x
         self.top_y = top_y
         self.left_x = left_x
@@ -112,14 +115,13 @@ class Triangle:
             QPoint(self.top_x, self.top_y),
             QPoint(self.left_x, self.left_y),
             QPoint(self.right_x, self.right_y)
-
         ])
 
     def draw(self, painter):
-        painter.setBrush(QBrush(QColor(0, 0, 0, 0)))
-        painter.setPen(QPen(QColor(0,0,0,0)))
-        # рисуем
         painter.drawPolygon(self.points)
+        painter.setBrush(QBrush(QColor(0, 0, 0, 0)))
+        painter.setPen(QPen(QColor(0, 0, 0, 0)))
+        # рисуем
 
 
 class Rectangle:
@@ -172,7 +174,8 @@ class Canvas(QWidget):
 
             elif self.instrument == 'triangle':
                 self.objects.append(
-                    Triangle(event.x(), event.y(), event.x(), event.y(), event.x(), event.y())) # передаем точки в класс
+                    Triangle(event.x(), event.y() - 1, event.x() - 1, event.y(), event.x() + 1,
+                             event.y()))
                 print(self.objects)
                 print(tr_left)
                 self.update()
@@ -206,15 +209,23 @@ class Canvas(QWidget):
                 self.objects[-1].width = event.x() - self.objects[-1].x
                 self.objects[-1].hight = event.y() - self.objects[-1].y
                 self.update()
-
             # Изменение фигуры при рисовании
             elif self.instrument == 'triangle':
-                self.objects[-1].top_x = (event.x() - tr_left) / 2 # Координата врешины (она находится на срередине основания по x)
-                self.objects[-1].top_y = event.y() # Координата вершины по y
-                # координаты левой точки не меняются
-                self.objects[-1].rigtht_x = event.x()
-                # координаты правой точки меняются только по x
-
+                a = (event.x() - tr_left) / 2
+                self.objects[-1].top_x = a
+                self.objects[-1].top_y = event.y()
+                self.objects[-1].left_x = tr_left
+                self.objects[-1].rigtht_x = event.x()  # Присваиваем event.x()
+                print('tr_left', tr_left, 'event_x', event.x(), 'ev_y', event.y())
+                print('Top')
+                print('x', self.objects[-1].top_x)
+                print('y', self.objects[-1].top_y)
+                print('Left')
+                print('x', self.objects[-1].left_x)
+                print('y', self.objects[-1].left_y)
+                print('Right')
+                print('x', self.objects[-1].right_x)  # Но здесь совсем другое значение: каждый раз просто прибавляется 2
+                print('y', self.objects[-1].right_y)
 
     def setBrush(self):
         global eraser
