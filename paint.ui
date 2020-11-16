@@ -14,11 +14,26 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">#centralwidget
-{background-color: rgb(255, 255, 255);}
+   <string notr="true">background-color: rgb(255, 255, 255)
+#menubar {
+background-color: rgb(0, 0, 0)};
 </string>
   </property>
-  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>290</x>
+      <y>152</y>
+      <width>131</width>
+      <height>121</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+  </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
@@ -38,7 +53,9 @@
     <addaction name="rectangle"/>
     <addaction name="triangle"/>
     <addaction name="lastik"/>
+    <addaction name="highlight"/>
     <addaction name="color"/>
+    <addaction name="delete_2"/>
    </widget>
    <widget class="QMenu" name="menu_2">
     <property name="title">
@@ -55,6 +72,7 @@
      <string>Файл</string>
     </property>
     <addaction name="save"/>
+    <addaction name="open"/>
    </widget>
    <addaction name="menu_3"/>
    <addaction name="menu"/>
@@ -77,6 +95,7 @@
    <addaction name="triangle"/>
    <addaction name="rectangle"/>
    <addaction name="lastik"/>
+   <addaction name="highlight"/>
    <addaction name="color"/>
   </widget>
   <action name="brush">
@@ -174,6 +193,29 @@
   <action name="save">
    <property name="text">
     <string>Сохранить</string>
+   </property>
+  </action>
+  <action name="open">
+   <property name="text">
+    <string>Открыть</string>
+   </property>
+  </action>
+  <action name="highlight">
+   <property name="icon">
+    <iconset>
+     <normaloff>highlight.png</normaloff>highlight.png</iconset>
+   </property>
+   <property name="text">
+    <string>Выделить</string>
+   </property>
+  </action>
+  <action name="delete_2">
+   <property name="icon">
+    <iconset>
+     <normaloff>587px-Красный_крест.webp.png</normaloff>587px-Красный_крест.webp.png</iconset>
+   </property>
+   <property name="text">
+    <string>delete</string>
    </property>
   </action>
  </widget>
