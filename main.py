@@ -1,13 +1,9 @@
 import sys
-import sqlite3
 
 from PyQt5 import uic
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QBrush, QColor, QPainter, QPen
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QColorDialog, QFileDialog
-
-con = sqlite3.connect('paint.db')
-cur = con.cursor()
 
 lx = 0
 ly = 0
@@ -57,7 +53,7 @@ class Line:
             self.pen = QPen(QColor(color[0], color[1], color[2]))
 
         else:
-            self.pen = QPen(QColor(212, 208, 200))
+            self.pen = QPen(QColor(255, 255, 255))
 
         self.pen.setWidth(thickness)
 
@@ -66,7 +62,7 @@ class Line:
             painter.setPen(self.pen)
             painter.drawLine(self.sx, self.sy, self.ex, self.ey)
         else:
-            painter.setBrush(QBrush(QColor(212, 208, 200)))
+            painter.setBrush(QBrush(QColor(255, 255, 255)))
             painter.setPen(self.pen)
             painter.drawLine(self.sx, self.sy, self.ex, self.ey)
 
@@ -94,7 +90,6 @@ class Triangle:
     def __init__(self, top_x, top_y, left_x, left_y, right_x, right_y):
         global color
         global thickness
-        global tr_left
         self.top_x = top_x
         self.top_y = top_y
         self.left_x = left_x
@@ -216,9 +211,7 @@ class Canvas(QWidget):
     def mouseMoveEvent(self, event):
         global lx
         global ly
-        global tr_left
         global flag
-        global cur
         if event.buttons() and Qt.LeftButton:
             if self.instrument == 'brush':
                 self.objects.append(Line(lx, ly, event.x(), event.y()))
@@ -252,13 +245,6 @@ class Canvas(QWidget):
                 self.objects[-1].right_x = event.x()
                 self.update()
 
-    def mouseReleaseEvent(self, event):
-        if self.instrument == 'brush':
-            ob = f'{self.objects[-1]}'
-            print(type(ob))
-            cur.execute("""INSERT INTO main(instrument) VALUES('a')""")
-            # cur.execute(f"""INSERT INTO main(object) VALUES('{ob}')""")
-
     def setBrush(self):
         global eraser
         self.instrument = 'brush'
@@ -283,17 +269,16 @@ class Canvas(QWidget):
         global highlight
         self.instrument = 'highlight'
         highlight = True
-        print(highlight)
 
     def delete_(self):
         global flag
         if flag:
             self.objects[-1].stil = Qt.SolidLine
-            self.objects[-1].r = 212
-            self.objects[-1].g = 208
-            self.objects[-1].b = 200
+            self.objects[-1].r = 255
+            self.objects[-1].g = 255
+            self.objects[-1].b = 255
             self.objects[-1].fon = 255
-            self.objects[-1].pen = QPen(QColor(212, 208, 200))
+            self.objects[-1].pen = QPen(QColor(255, 255, 255))
             self.update()
 
     def color(self):
@@ -354,23 +339,10 @@ class Program(QMainWindow):
         self.very_thick.triggered.connect(self.centralWidget().very_thick)
 
         self.save.triggered.connect(self.save_)
-        # self.open.triggered.connect(self.open_)
 
     def save_(self):
         fname = QFileDialog.getSaveFileName(self, 'Cохранить как', 'img.jpg')[0]
         self.centralWidget().grab().save(fname)
-
-    # def open_(self):
-    #     filename, _ = QFileDialog.getOpenFileName(
-    #         self,
-    #         "Выберите изображение",
-    #         "",
-    #         "PNG(*.png);;JPEG(*.jpg *.jpeg);;All Files(*.*)"
-    #     )
-    #     if not filename:
-    #         return
-    #     self.centralWidget().load(filename)
-    #     self.selection.hide()
 
 
 def except_hook(cls, exception, traceback):
