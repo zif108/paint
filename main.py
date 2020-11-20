@@ -311,10 +311,6 @@ class Canvas(QWidget):
         global thickness
         thickness = 10
 
-    def very_thick(self):
-        global thickness
-        thickness = 20
-
 
 class Program(QMainWindow):
     def __init__(self):
@@ -336,7 +332,6 @@ class Program(QMainWindow):
         self.not_thin.triggered.connect(self.centralWidget().not_thin)
         self.average.triggered.connect(self.centralWidget().average)
         self.thick.triggered.connect(self.centralWidget().thick)
-        self.very_thick.triggered.connect(self.centralWidget().very_thick)
 
         self.save.triggered.connect(self.save_)
 

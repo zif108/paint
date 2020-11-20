@@ -14,9 +14,7 @@
    <string>Paint</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(255, 255, 255)
-
-</string>
+   <string notr="true">background-color: rgb(255, 255, 255)</string>
   </property>
   <widget class="QWidget" name="centralwidget"/>
   <widget class="QMenuBar" name="menubar">
@@ -50,7 +48,6 @@
     <addaction name="not_thin"/>
     <addaction name="average"/>
     <addaction name="thick"/>
-    <addaction name="very_thick"/>
    </widget>
    <widget class="QMenu" name="menu_3">
     <property name="title">
@@ -200,6 +197,11 @@
    </property>
    <property name="text">
     <string>delete</string>
+   </property>
+  </action>
+  <action name="open_2">
+   <property name="text">
+    <string>Загрузить</string>
    </property>
   </action>
  </widget>
